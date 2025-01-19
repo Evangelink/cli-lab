@@ -7,10 +7,10 @@ using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo.Versioning;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Commands;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
 using Microsoft.DotNet.Tools.Uninstall.Tests.Attributes;
-using Xunit;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
 {
+    [TestClass]
     public class ListCommandExecTests
     {
         private Dictionary<string, BundleArch> versionsWithArch = new Dictionary<string, BundleArch>
@@ -27,19 +27,19 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
             { "2.1.1", BundleArch.X86 },
         };
 
-        [WindowsOnlyTheory]
-        [InlineData("sdk", "", new string[] { "1.0.1", "3.1.0", "2.1.1" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2" })]
-        [InlineData("runtime", "", new string[] { }, new string[] { "1.0.1", "3.1.0", "2.1.1", "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2" })]
-        [InlineData("sdk", "--x64", new string[] { "1.0.1" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0" })]
-        internal void ListCommandFilteringIsCorrectOnWindows(string bundleType, string options, string[] expectedProtected, string[] expectedUninstallable)
+        [WindowsOnlyTestMethod]
+        [DataRow("sdk", "", new string[] { "1.0.1", "3.1.0", "2.1.1" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2" })]
+        [DataRow("runtime", "", new string[] { }, new string[] { "1.0.1", "3.1.0", "2.1.1", "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2" })]
+        [DataRow("sdk", "--x64", new string[] { "1.0.1" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0" })]
+        public void ListCommandFilteringIsCorrectOnWindows(string bundleType, string options, string[] expectedProtected, string[] expectedUninstallable)
         {
             ListCommandFilteringIsCorrect(bundleType, options, expectedProtected, expectedUninstallable);
         }
 
-        [MacOsOnlyTheory]
-        [InlineData("sdk", "", new string[] { "3.1.0" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2", "2.1.1", "1.0.1" })]
-        [InlineData("runtime", "", new string[] { "3.1.0", "3.0.2", "2.1.1", "1.0.1" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2-preview1", "3.0.2-preview2" })]
-        internal void ListCommandFilteringIsCorrectOnMac(string bundleType, string options, string[] expectedProtected, string[] expectedUninstallable)
+        [MacOsOnlyTestMethod]
+        [DataRow("sdk", "", new string[] { "3.1.0" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2", "2.1.1", "1.0.1" })]
+        [DataRow("runtime", "", new string[] { "3.1.0", "3.0.2", "2.1.1", "1.0.1" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2-preview1", "3.0.2-preview2" })]
+        public void ListCommandFilteringIsCorrectOnMac(string bundleType, string options, string[] expectedProtected, string[] expectedUninstallable)
         {
             ListCommandFilteringIsCorrect(bundleType, options, expectedProtected, expectedUninstallable);
         }

@@ -2,10 +2,10 @@
 using System.CommandLine;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
-using Xunit;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
 {
+    [TestClass]
     public class AllBelowOptionFiltererTests : FiltererTests
     {
         internal override Option Option => CommandLineConfigs.UninstallAllBelowOption;
@@ -353,8 +353,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestFiltererGood))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestFiltererGood))]
         internal void TestAllBelowOptionFiltererGood(IEnumerable<Bundle> testBundles, string argValue, IEnumerable<Bundle> expected, BundleType typeSelection, BundleArch archSelection)
         {
             TestFiltererGood(testBundles, argValue, expected, typeSelection, archSelection);

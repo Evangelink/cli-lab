@@ -8,4 +8,18 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
+  <!-- Test config -->
+  <PropertyGroup>
+    <!-- Arcade config -->
+    <MSTestVersion>3.8.0-preview.25072.4</MSTestVersion>
+    <MTPVersion>1.6.0-preview.25072.4</MTPVersion>
+    <TestRunnerName>MSTest</TestRunnerName>
+    <UseMSTestMetaPackage>true</UseMSTestMetaPackage>
+    <UseMSTestRunner>true</UseMSTestRunner>
+    <!-- MSTest config -->
+    <EnableMSTestRunner>true</EnableMSTestRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <MSTestAnalysisMode>Recommended</MSTestAnalysisMode>
+  </PropertyGroup>
+
 </Project>

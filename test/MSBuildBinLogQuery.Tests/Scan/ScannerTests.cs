@@ -1,12 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.Build.Logging.Query.Scan;
 using Microsoft.Build.Logging.Query.Token;
-using Xunit;
 
 namespace Microsoft.Build.Logging.Query.Tests.Scan
 {
+    [TestClass]
     public class ScannerTests
     {
         public static IEnumerable<object[]> GenerateDataForTestScannedTokens()
@@ -473,8 +473,8 @@ namespace Microsoft.Build.Logging.Query.Tests.Scan
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GenerateDataForTestScannedTokens))]
+        [TestMethod]
+        [DynamicData(nameof(GenerateDataForTestScannedTokens))]
         public void TestScannedTokens(string expression, IList<Token.Token> expectedTokens)
         {
             var scanner = new Scanner(expression);
@@ -493,25 +493,25 @@ namespace Microsoft.Build.Logging.Query.Tests.Scan
             }
         }
 
-        [Theory]
-        [InlineData("\\")]
-        [InlineData("?")]
-        [InlineData("()")]
-        [InlineData("<>")]
-        [InlineData("hello")]
-        [InlineData("messages")]
-        [InlineData("-123456")]
-        [InlineData("123.456")]
-        [InlineData("0x123def")]
-        [InlineData("9876543210")]
-        [InlineData("/project[]/message?")]
-        [InlineData("\\project[]\\message")]
-        [InlineData("/Project[Id=536S]")]
-        [InlineData("/Project[Identity=123]")]
-        [InlineData("/Project[Path=HelloWorld]")]
-        [InlineData("/Target[Id=HelloWorld]")]
-        [InlineData("/Target[Name=HelloWorld]")]
-        [InlineData("/Task[Id<123]")]
+        [TestMethod]
+        [DataRow("\\")]
+        [DataRow("?")]
+        [DataRow("()")]
+        [DataRow("<>")]
+        [DataRow("hello")]
+        [DataRow("messages")]
+        [DataRow("-123456")]
+        [DataRow("123.456")]
+        [DataRow("0x123def")]
+        [DataRow("9876543210")]
+        [DataRow("/project[]/message?")]
+        [DataRow("\\project[]\\message")]
+        [DataRow("/Project[Id=536S]")]
+        [DataRow("/Project[Identity=123]")]
+        [DataRow("/Project[Path=HelloWorld]")]
+        [DataRow("/Target[Id=HelloWorld]")]
+        [DataRow("/Target[Name=HelloWorld]")]
+        [DataRow("/Task[Id<123]")]
         public void TestScannedTokensException(string expression)
         {
             Action action = () =>

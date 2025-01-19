@@ -3,22 +3,22 @@ using FluentAssertions;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo.Versioning;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Exceptions;
 using Microsoft.DotNet.Tools.Uninstall.Tests.TestUtils;
-using Xunit;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
 {
+    [TestClass]
     public class MajorMinorVersionTests
     {
-        [Theory]
-        [InlineData("1.0", 1, 0)]
-        [InlineData("1.1", 1, 1)]
-        [InlineData("2.0", 2, 0)]
-        [InlineData("2.1", 2, 1)]
-        [InlineData("2.2", 2, 2)]
-        [InlineData("3.0", 3, 0)]
-        [InlineData("12.345", 12, 345)]
-        [InlineData("0012.00345", 12, 345)]
-        internal void TestFromInput(string input, int major, int minor)
+        [TestMethod]
+        [DataRow("1.0", 1, 0)]
+        [DataRow("1.1", 1, 1)]
+        [DataRow("2.0", 2, 0)]
+        [DataRow("2.1", 2, 1)]
+        [DataRow("2.2", 2, 2)]
+        [DataRow("3.0", 3, 0)]
+        [DataRow("12.345", 12, 345)]
+        [DataRow("0012.00345", 12, 345)]
+        public void TestFromInput(string input, int major, int minor)
         {
             var majorMinor = MajorMinorVersion.FromInput(input);
             TestProperties(majorMinor, major, minor);
@@ -28,26 +28,26 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
             TestProperties(majorMinor, major, minor);
         }
 
-        [Theory]
-        [InlineData("")]
-        [InlineData("2")]
-        [InlineData("2.")]
-        [InlineData("2.2.")]
-        [InlineData("2.2.2")]
-        [InlineData("2.2.202")]
-        [InlineData("a.0")]
-        [InlineData("0.a")]
-        [InlineData("2.2-preview")]
-        [InlineData("2.2-preview-011768")]
-        [InlineData("2.2-preview-011768-15")]
-        [InlineData("3.0.0-preview5-27626-15")]
-        [InlineData("3.0.100-preview5-011568")]
-        [InlineData("Hello2.2World")]
-        [InlineData("Hello 2.2 World")]
-        [InlineData("2. 2")]
-        [InlineData("2 .2")]
-        [InlineData("2 . 2")]
-        internal void TestFromInputReject(string input)
+        [TestMethod]
+        [DataRow("")]
+        [DataRow("2")]
+        [DataRow("2.")]
+        [DataRow("2.2.")]
+        [DataRow("2.2.2")]
+        [DataRow("2.2.202")]
+        [DataRow("a.0")]
+        [DataRow("0.a")]
+        [DataRow("2.2-preview")]
+        [DataRow("2.2-preview-011768")]
+        [DataRow("2.2-preview-011768-15")]
+        [DataRow("3.0.0-preview5-27626-15")]
+        [DataRow("3.0.100-preview5-011568")]
+        [DataRow("Hello2.2World")]
+        [DataRow("Hello 2.2 World")]
+        [DataRow("2. 2")]
+        [DataRow("2 .2")]
+        [DataRow("2 . 2")]
+        public void TestFromInputReject(string input)
         {
             Action action = () => MajorMinorVersion.FromInput(input);
             action.Should().Throw<InvalidInputVersionException>(string.Format(LocalizableStrings.InvalidInputVersionExceptionMessageFormat, input));
@@ -56,26 +56,26 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
                 .Should().BeFalse();
         }
 
-        [Theory]
-        [InlineData(1, 0)]
-        [InlineData(1, 1)]
-        [InlineData(2, 0)]
-        [InlineData(2, 1)]
-        [InlineData(2, 2)]
-        [InlineData(3, 0)]
-        [InlineData(12, 345)]
-        internal void TestConstructor(int major, int minor)
+        [TestMethod]
+        [DataRow(1, 0)]
+        [DataRow(1, 1)]
+        [DataRow(2, 0)]
+        [DataRow(2, 1)]
+        [DataRow(2, 2)]
+        [DataRow(3, 0)]
+        [DataRow(12, 345)]
+        public void TestConstructor(int major, int minor)
         {
             var majorMinor = new MajorMinorVersion(major, minor);
 
             TestProperties(majorMinor, major, minor);
         }
 
-        [Theory]
-        [InlineData(-1, 0)]
-        [InlineData(1, -1)]
-        [InlineData(-12, -345)]
-        internal void TestConstructorIntsArgumentOutOfRangeException(int major, int minor)
+        [TestMethod]
+        [DataRow(-1, 0)]
+        [DataRow(1, -1)]
+        [DataRow(-12, -345)]
+        public void TestConstructorIntsArgumentOutOfRangeException(int major, int minor)
         {
             Action action = () => new MajorMinorVersion(major, minor);
 
@@ -88,15 +88,15 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
             majorMinor.Minor.Should().Be(minor);
         }
 
-        [Theory]
-        [InlineData("1.0", "1.0")]
-        [InlineData("1.1", "1.1")]
-        [InlineData("2.0", "2.0")]
-        [InlineData("2.1", "2.1")]
-        [InlineData("2.2", "2.2")]
-        [InlineData("3.0", "3.0")]
-        [InlineData("12.345", "0012.00345")]
-        internal void TestEquality(string input1, string input2)
+        [TestMethod]
+        [DataRow("1.0", "1.0")]
+        [DataRow("1.1", "1.1")]
+        [DataRow("2.0", "2.0")]
+        [DataRow("2.1", "2.1")]
+        [DataRow("2.2", "2.2")]
+        [DataRow("3.0", "3.0")]
+        [DataRow("12.345", "0012.00345")]
+        public void TestEquality(string input1, string input2)
         {
             var majorMinor1 = MajorMinorVersion.FromInput(input1);
             var majorMinor2 = MajorMinorVersion.FromInput(input2);
@@ -104,12 +104,12 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
             EqualityComparisonTestUtils<MajorMinorVersion>.TestEquality(majorMinor1, majorMinor2);
         }
 
-        [Theory]
-        [InlineData("1.0", "2.0")]
-        [InlineData("2.1", "2.2")]
-        [InlineData("1.2", "2.1")]
-        [InlineData("6.66", "23.33")]
-        internal void TestInequality(string lower, string higher)
+        [TestMethod]
+        [DataRow("1.0", "2.0")]
+        [DataRow("2.1", "2.2")]
+        [DataRow("1.2", "2.1")]
+        [DataRow("6.66", "23.33")]
+        public void TestInequality(string lower, string higher)
         {
             var lowerMajorMinor = MajorMinorVersion.FromInput(lower);
             var higherMajorMinor = MajorMinorVersion.FromInput(higher);
@@ -117,10 +117,10 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
             EqualityComparisonTestUtils<MajorMinorVersion>.TestInequality(lowerMajorMinor, higherMajorMinor);
         }
 
-        [Theory]
-        [InlineData("1.1")]
-        [InlineData("12.345")]
-        internal void TestInequalityNull(string input)
+        [TestMethod]
+        [DataRow("1.1")]
+        [DataRow("12.345")]
+        public void TestInequalityNull(string input)
         {
             var majorMinor = MajorMinorVersion.FromInput(input);
 

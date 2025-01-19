@@ -3,21 +3,21 @@ using FluentAssertions;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo.Versioning;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Exceptions;
-using Xunit;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
 {
+    [TestClass]
     public class SdkVersionTests
     {
-        [Theory]
-        [InlineData("2.2.300", 2, 2, 3, 0, false)]
-        [InlineData("0.2.300", 0, 2, 3, 0, false)]
-        [InlineData("2.0.300", 2, 0, 3, 0, false)]
-        [InlineData("2.2.202", 2, 2, 2, 2, false)]
-        [InlineData("3.0.100-preview5-011568", 3, 0, 1, 0, true)]
-        [InlineData("2.0.0-rc", 2, 0, 0, 0, true)]
-        [InlineData("2.0.2-rc1-abcdef", 2, 0, 0, 2, true)]
-        internal void TestConstructor(string input, int major, int minor, int sdkMinor, int patch, bool isPrerelease)
+        [TestMethod]
+        [DataRow("2.2.300", 2, 2, 3, 0, false)]
+        [DataRow("0.2.300", 0, 2, 3, 0, false)]
+        [DataRow("2.0.300", 2, 0, 3, 0, false)]
+        [DataRow("2.2.202", 2, 2, 2, 2, false)]
+        [DataRow("3.0.100-preview5-011568", 3, 0, 1, 0, true)]
+        [DataRow("2.0.0-rc", 2, 0, 0, 0, true)]
+        [DataRow("2.0.2-rc1-abcdef", 2, 0, 0, 2, true)]
+        public void TestConstructor(string input, int major, int minor, int sdkMinor, int patch, bool isPrerelease)
         {
             TestProperties(new SdkVersion(input), major, minor, sdkMinor, patch, isPrerelease, input);
             TestProperties(BundleVersion.FromInput<SdkVersion>(input), major, minor, sdkMinor, patch, isPrerelease, input);
@@ -39,10 +39,10 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
             version.ToStringWithAsterisk().Should().Be(toStringExpected);
         }
 
-        [Theory]
-        [InlineData("2.2.300", "2.2.300")]
-        [InlineData("3.0.100-preview5-011568", "3.0.100-preview5-011568")]
-        internal void TestEquality(string input1, string input2)
+        [TestMethod]
+        [DataRow("2.2.300", "2.2.300")]
+        [DataRow("3.0.100-preview5-011568", "3.0.100-preview5-011568")]
+        public void TestEquality(string input1, string input2)
         {
             var version1 = new SdkVersion(input1);
             var version2 = new SdkVersion(input2);
@@ -50,16 +50,16 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
             TestUtils.EqualityComparisonTestUtils<SdkVersion>.TestEquality(version1, version2);
         }
 
-        [Theory]
-        [InlineData("1.2.300", "2.2.300")]
-        [InlineData("2.1.300", "2.2.300")]
-        [InlineData("2.2.200", "2.2.300")]
-        [InlineData("2.2.302", "2.2.342")]
-        [InlineData("3.0.100-preview-009812", "3.0.100-preview5-011568")]
-        [InlineData("3.0.100-preview5-011568", "3.0.100-rc1-008673")]
-        [InlineData("3.0.100-preview5-011568", "3.0.100")]
-        [InlineData("3.0.100-rc1-008673", "3.0.100")]
-        internal void TestInequality(string lower, string higher)
+        [TestMethod]
+        [DataRow("1.2.300", "2.2.300")]
+        [DataRow("2.1.300", "2.2.300")]
+        [DataRow("2.2.200", "2.2.300")]
+        [DataRow("2.2.302", "2.2.342")]
+        [DataRow("3.0.100-preview-009812", "3.0.100-preview5-011568")]
+        [DataRow("3.0.100-preview5-011568", "3.0.100-rc1-008673")]
+        [DataRow("3.0.100-preview5-011568", "3.0.100")]
+        [DataRow("3.0.100-rc1-008673", "3.0.100")]
+        public void TestInequality(string lower, string higher)
         {
             var lowerVersion = new SdkVersion(lower);
             var higherVersion = new SdkVersion(higher);
@@ -67,70 +67,70 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo.Versioning
             TestUtils.EqualityComparisonTestUtils<SdkVersion>.TestInequality(lowerVersion, higherVersion);
         }
 
-        [Theory]
-        [InlineData("2.2.300")]
-        [InlineData("3.0.100-preview5-001568")]
-        internal void TestInequalityNull(string input)
+        [TestMethod]
+        [DataRow("2.2.300")]
+        [DataRow("3.0.100-preview5-001568")]
+        public void TestInequalityNull(string input)
         {
             var version = new SdkVersion(input);
 
             TestUtils.EqualityComparisonTestUtils<SdkVersion>.TestInequalityNull(version);
         }
 
-        [Theory]
-        [InlineData("1.0.0-preview2-003121")]
-        [InlineData("1.0.4")]
-        [InlineData("1.1.14")]
-        [InlineData("1.0.0-preview2.1-003177")]
-        [InlineData("2.0.0-preview1-005977")]
-        [InlineData("2.0.0")]
-        [InlineData("2.1.100")]
-        [InlineData("2.1.105")]
-        [InlineData("2.1.202")]
-        [InlineData("2.1.300-preview1-008174")]
-        [InlineData("2.1.300-rc1-008673")]
-        [InlineData("2.1.302")]
-        [InlineData("2.2.300")]
-        [InlineData("3.0.100-preview-009812")]
-        [InlineData("3.0.100-preview6-012264")]
-        [InlineData("2.0.0-preview")]
-        [InlineData("2.0.0-preview1")]
-        [InlineData("2.0.0-preview1-008174-01")]
-        [InlineData("2.1.300-preview")]
-        [InlineData("2.1.300-preview1")]
-        [InlineData("2.0.300-preview1-008174-01")]
-        [InlineData("2.1.300-rc")]
-        [InlineData("2.1.300-rc1")]
-        [InlineData("2.1.300-rc1-002111-01")]
-        [InlineData("2.1.300-rc1-final")]
-        [InlineData("2.0.100-preview1-abcdef")]
-        internal void TestFromInputAccept(string input)
+        [TestMethod]
+        [DataRow("1.0.0-preview2-003121")]
+        [DataRow("1.0.4")]
+        [DataRow("1.1.14")]
+        [DataRow("1.0.0-preview2.1-003177")]
+        [DataRow("2.0.0-preview1-005977")]
+        [DataRow("2.0.0")]
+        [DataRow("2.1.100")]
+        [DataRow("2.1.105")]
+        [DataRow("2.1.202")]
+        [DataRow("2.1.300-preview1-008174")]
+        [DataRow("2.1.300-rc1-008673")]
+        [DataRow("2.1.302")]
+        [DataRow("2.2.300")]
+        [DataRow("3.0.100-preview-009812")]
+        [DataRow("3.0.100-preview6-012264")]
+        [DataRow("2.0.0-preview")]
+        [DataRow("2.0.0-preview1")]
+        [DataRow("2.0.0-preview1-008174-01")]
+        [DataRow("2.1.300-preview")]
+        [DataRow("2.1.300-preview1")]
+        [DataRow("2.0.300-preview1-008174-01")]
+        [DataRow("2.1.300-rc")]
+        [DataRow("2.1.300-rc1")]
+        [DataRow("2.1.300-rc1-002111-01")]
+        [DataRow("2.1.300-rc1-final")]
+        [DataRow("2.0.100-preview1-abcdef")]
+        public void TestFromInputAccept(string input)
         {
             Action action = () => new SdkVersion(input);
 
             action.Should().NotThrow();
         }
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData("-2.2.300")]
-        [InlineData("-1.2.300")]
-        [InlineData("2.2.-300")]
-        [InlineData("3.-1.100-preview5-011568")]
-        [InlineData("3.1.-100-preview5-011568")]
-        [InlineData("3.1.-1-1-preview5-011568")]
-        [InlineData("1.0")]
-        [InlineData("1.0.")]
-        [InlineData("12.345")]
-        [InlineData("0012.00345")]
-        [InlineData("2.2.5.002111")]
-        [InlineData("2.2.500.002111")]
-        [InlineData("a.0.100")]
-        [InlineData("0.a.302")]
-        [InlineData("0.0.abc")]
-        [InlineData("Hello2.2.300World")]
-        [InlineData("Hello 2.2.300 World")]
-        internal void TestFromInputReject(string input)
+        [TestMethod]
+        [DataRow(null)]
+        [DataRow("-2.2.300")]
+        [DataRow("-1.2.300")]
+        [DataRow("2.2.-300")]
+        [DataRow("3.-1.100-preview5-011568")]
+        [DataRow("3.1.-100-preview5-011568")]
+        [DataRow("3.1.-1-1-preview5-011568")]
+        [DataRow("1.0")]
+        [DataRow("1.0.")]
+        [DataRow("12.345")]
+        [DataRow("0012.00345")]
+        [DataRow("2.2.5.002111")]
+        [DataRow("2.2.500.002111")]
+        [DataRow("a.0.100")]
+        [DataRow("0.a.302")]
+        [DataRow("0.0.abc")]
+        [DataRow("Hello2.2.300World")]
+        [DataRow("Hello 2.2.300 World")]
+        public void TestFromInputReject(string input)
         {
             Action action = () => new SdkVersion(input);
 

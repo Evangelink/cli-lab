@@ -4,10 +4,10 @@ using FluentAssertions;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo.Versioning;
 using Microsoft.DotNet.Tools.Uninstall.Tests.TestUtils;
-using Xunit;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo
 {
+    [TestClass]
     public class BundleTests
     {
         private static readonly SdkVersion TestSdkVersion1 = new SdkVersion("3.0.100-preview5-011568");
@@ -23,8 +23,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo
         private static readonly string TestDisplayName1 = "Microsoft .NET Core SDK 2.2.300 (x64)";
         private static readonly string TestDisplayName2 = "some random display name";
 
-        [Fact]
-        internal void TestConstructor()
+        [TestMethod]
+        public void TestConstructor()
         {
             var version = TestRuntimeVersion1;
             var uninstallCommand = TestUninstallCommand1;
@@ -65,8 +65,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestConstructorNull))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestConstructorNull))]
         internal void TestConstructorNull(RuntimeVersion version, BundleArch arch, string uninstallCommand, string displayName)
         {
             Action action = () => new Bundle<RuntimeVersion>(version, arch, uninstallCommand, displayName);
@@ -117,8 +117,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestFrom))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestFrom))]
         internal void TestFrom<TBundleVersion>(TBundleVersion version, BundleArch arch, string uninstallCommand, string displayName)
             where TBundleVersion : BundleVersion, IComparable<TBundleVersion>
         {
@@ -173,8 +173,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestEquality))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestEquality))]
         internal void TestEquality<TBundleVersion>(Bundle<TBundleVersion> bundle1, Bundle<TBundleVersion> bundle2)
             where TBundleVersion : BundleVersion, IComparable<TBundleVersion>
         {
@@ -202,8 +202,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestToString))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestToString))]
         internal void TestToString(RuntimeVersion version, BundleArch arch)
         {
             new Bundle<RuntimeVersion>(version, arch, TestUninstallCommand1, TestDisplayName1).ToString()
@@ -255,8 +255,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestInequality))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestInequality))]
         internal void TestInequality<TBundleVersion>(Bundle<TBundleVersion> lower, Bundle<TBundleVersion> higher)
             where TBundleVersion : BundleVersion, IComparable<TBundleVersion>
         {
@@ -286,8 +286,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestInequalityNull))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestInequalityNull))]
         internal void TestInequalityNull<TBundleVersion>(Bundle<TBundleVersion> bundle)
             where TBundleVersion : BundleVersion, IComparable<TBundleVersion>
         {
@@ -420,8 +420,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.BundleInfo
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestFilterWithSameBundleType))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestFilterWithSameBundleType))]
         internal void TestFilterWithSameBundleType<TBundleVersion>(IEnumerable<Bundle> bundles, IEnumerable<Bundle<TBundleVersion>> expected)
             where TBundleVersion : BundleVersion, IComparable<TBundleVersion>
         {

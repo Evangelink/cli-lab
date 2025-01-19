@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Commands;
-using Xunit;
 using FluentAssertions;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo.Versioning;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
 {
+    [TestClass]
     public class UninstallCommandExecTests
     {
         internal enum Results
@@ -16,13 +16,13 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
             Error
         }
 
-        [Theory]
-        [InlineData("Y", Results.Success)]
-        [InlineData("YES", Results.Success)]
-        [InlineData("yes", Results.Success)]
-        [InlineData("n", Results.Reject)]
-        [InlineData("", Results.Error)]
-        [InlineData("foo", Results.Error)]
+        [TestMethod]
+        [DataRow("Y", Results.Success)]
+        [DataRow("YES", Results.Success)]
+        [DataRow("yes", Results.Success)]
+        [DataRow("n", Results.Reject)]
+        [DataRow("", Results.Error)]
+        [DataRow("foo", Results.Error)]
         internal void UserInputIsInterpretedCorrectly(string userResponse, Results expectedResult)
         {
             var bundles = new Dictionary<Bundle, string>() { { new Bundle<SdkVersion>(new SdkVersion(), new BundleArch(), string.Empty, string.Empty), "Required" } };

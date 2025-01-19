@@ -9,7 +9,6 @@ using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Exceptions;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Filterers;
 using Microsoft.DotNet.Tools.Uninstall.Tests.Attributes;
-using Xunit;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
 {
@@ -108,18 +107,18 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
             .Concat(DefaultTestAspNetRuntimes.Select(aspNetRuntime => aspNetRuntime as Bundle))
             .Concat(DefaultTestHostingBundles.Select(hostingBundle => hostingBundle as Bundle));
 
-        [Theory]
-        [InlineData((BundleType)0)]
-        [InlineData((BundleType.Sdk | BundleType.Runtime | BundleType.AspNetRuntime | BundleType.HostingBundle) + 1)]
-        [InlineData((BundleType.Sdk | BundleType.Runtime | BundleType.AspNetRuntime | BundleType.HostingBundle) + 2)]
-        [InlineData((BundleType.Sdk | BundleType.Runtime | BundleType.AspNetRuntime | BundleType.HostingBundle) + 10)]
+        [TestMethod]
+        [DataRow((BundleType)0)]
+        [DataRow((BundleType.Sdk | BundleType.Runtime | BundleType.AspNetRuntime | BundleType.HostingBundle) + 1)]
+        [DataRow((BundleType.Sdk | BundleType.Runtime | BundleType.AspNetRuntime | BundleType.HostingBundle) + 2)]
+        [DataRow((BundleType.Sdk | BundleType.Runtime | BundleType.AspNetRuntime | BundleType.HostingBundle) + 10)]
         internal void TestFiltererArgumentOutOfRangeException(BundleType typeSelection)
         {
             TestFiltererException<ArgumentOutOfRangeException>(DefaultTestBundles, DefaultTestArgValue, typeSelection, DefaultTestArchSelection);
         }
 
-        [WindowsOnlyFact]
-        internal void TestFiltererBundleTypeNotSpecifiedExceptionWindows()
+        [WindowsOnlyTestMethod]
+        public void TestFiltererBundleTypeNotSpecifiedExceptionWindows()
         {
             TestFiltererException<BundleTypeMissingException>(
                 DefaultTestBundles,
@@ -129,8 +128,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
                 string.Format(LocalizableStrings.BundleTypeMissingExceptionMessage, "--aspnet-runtime, --hosting-bundle, --runtime, --sdk"));
         }
 
-        [MacOsOnlyFact]
-        internal void TestFiltererBundleTypeNotSpecifiedExceptionMacOs()
+        [MacOsOnlyTestMethod]
+        public void TestFiltererBundleTypeNotSpecifiedExceptionMacOs()
         {
             TestFiltererException<BundleTypeMissingException>(
                 DefaultTestBundles,

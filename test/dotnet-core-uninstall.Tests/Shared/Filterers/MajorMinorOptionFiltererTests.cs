@@ -3,10 +3,10 @@ using System.CommandLine;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Exceptions;
-using Xunit;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
 {
+    [TestClass]
     public class MajorMinorOptionFiltererTests : FiltererTests
     {
         internal override Option Option => CommandLineConfigs.UninstallMajorMinorOption;
@@ -134,27 +134,27 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestFiltererGood))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestFiltererGood))]
         internal void TestMajorMinorOptionFiltererGood(IEnumerable<Bundle> testBundles, string argValue, IEnumerable<Bundle> expected, BundleType typeSelection, BundleArch archSelection)
         {
             TestFiltererGood(testBundles, argValue, expected, typeSelection, archSelection);
         }
 
-        [Theory]
-        [InlineData("2")]
-        [InlineData("2.")]
-        [InlineData("2.2.")]
-        [InlineData("2.2.2")]
-        [InlineData("2.2.202")]
-        [InlineData("a.0")]
-        [InlineData("0.a")]
-        [InlineData("2.2-preview")]
-        [InlineData("2.2-preview-011768")]
-        [InlineData("2.2-preview-011768-15")]
-        [InlineData("3.0.0-preview5-27626-15")]
-        [InlineData("3.0.100-preview5-011568")]
-        internal void TestMajorMinorOptionFiltererInvalidInputVersionStringException(string argValue)
+        [TestMethod]
+        [DataRow("2")]
+        [DataRow("2.")]
+        [DataRow("2.2.")]
+        [DataRow("2.2.2")]
+        [DataRow("2.2.202")]
+        [DataRow("a.0")]
+        [DataRow("0.a")]
+        [DataRow("2.2-preview")]
+        [DataRow("2.2-preview-011768")]
+        [DataRow("2.2-preview-011768-15")]
+        [DataRow("3.0.0-preview5-27626-15")]
+        [DataRow("3.0.100-preview5-011568")]
+        public void TestMajorMinorOptionFiltererInvalidInputVersionStringException(string argValue)
         {
             TestFiltererException<InvalidInputVersionException>(DefaultTestBundles, argValue, BundleType.Sdk, DefaultTestArchSelection, string.Format(LocalizableStrings.InvalidInputVersionExceptionMessageFormat, argValue));
             TestFiltererException<InvalidInputVersionException>(DefaultTestBundles, argValue, BundleType.Runtime, DefaultTestArchSelection, string.Format(LocalizableStrings.InvalidInputVersionExceptionMessageFormat, argValue));

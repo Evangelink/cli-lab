@@ -7,10 +7,10 @@ using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Exceptions;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Filterers;
-using Xunit;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
 {
+    [TestClass]
     public class NoOptionFiltererTests : FiltererTests
     {
         internal override Option Option => null;
@@ -198,35 +198,35 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestFiltererGood))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestFiltererGood))]
         internal void TestNoOptionFiltererGood(IEnumerable<Bundle> testBundles, string argValue, IEnumerable<Bundle> expected, BundleType typeSelection, BundleArch archSelection)
         {
             TestFiltererGood(testBundles, argValue, expected, typeSelection, archSelection);
         }
 
-        [Theory]
-        [InlineData("2.2.302", BundleType.Sdk, DefaultTestArchSelection)]
-        [InlineData("2.2.3", BundleType.Runtime, DefaultTestArchSelection)]
-        [InlineData("2.2.202 2.2.302 2.1.520", BundleType.Sdk, DefaultTestArchSelection)]
-        [InlineData("2.2.1 2.2.2 2.2.3 2.2.4 2.2.5", BundleType.Runtime, DefaultTestArchSelection)]
-        [InlineData("3.0.100-preview2-011568", BundleType.Sdk, DefaultTestArchSelection)]
-        [InlineData("2.1.300-rc3-008673", BundleType.Sdk, DefaultTestArchSelection)]
-        [InlineData("3.0.0-preview4-27626-15", BundleType.Runtime, DefaultTestArchSelection)]
-        [InlineData("3.0.0-preview5-27626-16", BundleType.Runtime, DefaultTestArchSelection)]
-        [InlineData("2.1.0-rc2", BundleType.Runtime, DefaultTestArchSelection)]
-        [InlineData("2.1.0-rc1-008673", BundleType.Runtime, DefaultTestArchSelection)]
-        [InlineData("2.2.5", BundleType.Sdk, DefaultTestArchSelection)]
-        [InlineData("2.2.202", BundleType.Runtime, DefaultTestArchSelection)]
-        [InlineData("2.2.222", BundleType.Sdk, BundleArch.X64)]
-        [InlineData("3.0.100-preview5-011568", BundleType.Sdk, BundleArch.X86 | BundleArch.X86)]
-        [InlineData("2.2.4", BundleType.Runtime, BundleArch.X64)]
-        [InlineData("2.1.0-rc1", BundleType.Runtime, BundleArch.X86)]
-        [InlineData("3.0.0", BundleType.AspNetRuntime, DefaultTestArchSelection)]
-        [InlineData("2.1.0-rc1", BundleType.AspNetRuntime, DefaultTestArchSelection)]
-        [InlineData("2.2.1 2.2.2 2.2.3 2.2.4 2.2.5", BundleType.AspNetRuntime, DefaultTestArchSelection)]
-        [InlineData("3.0.0-preview6-19307-2 2.2.6 2.2.0", BundleType.HostingBundle, DefaultTestArchSelection)]
-        [InlineData("2.2.0-preview3-final", BundleType.HostingBundle, DefaultTestArchSelection)]
+        [TestMethod]
+        [DataRow("2.2.302", BundleType.Sdk, DefaultTestArchSelection)]
+        [DataRow("2.2.3", BundleType.Runtime, DefaultTestArchSelection)]
+        [DataRow("2.2.202 2.2.302 2.1.520", BundleType.Sdk, DefaultTestArchSelection)]
+        [DataRow("2.2.1 2.2.2 2.2.3 2.2.4 2.2.5", BundleType.Runtime, DefaultTestArchSelection)]
+        [DataRow("3.0.100-preview2-011568", BundleType.Sdk, DefaultTestArchSelection)]
+        [DataRow("2.1.300-rc3-008673", BundleType.Sdk, DefaultTestArchSelection)]
+        [DataRow("3.0.0-preview4-27626-15", BundleType.Runtime, DefaultTestArchSelection)]
+        [DataRow("3.0.0-preview5-27626-16", BundleType.Runtime, DefaultTestArchSelection)]
+        [DataRow("2.1.0-rc2", BundleType.Runtime, DefaultTestArchSelection)]
+        [DataRow("2.1.0-rc1-008673", BundleType.Runtime, DefaultTestArchSelection)]
+        [DataRow("2.2.5", BundleType.Sdk, DefaultTestArchSelection)]
+        [DataRow("2.2.202", BundleType.Runtime, DefaultTestArchSelection)]
+        [DataRow("2.2.222", BundleType.Sdk, BundleArch.X64)]
+        [DataRow("3.0.100-preview5-011568", BundleType.Sdk, BundleArch.X86 | BundleArch.X86)]
+        [DataRow("2.2.4", BundleType.Runtime, BundleArch.X64)]
+        [DataRow("2.1.0-rc1", BundleType.Runtime, BundleArch.X86)]
+        [DataRow("3.0.0", BundleType.AspNetRuntime, DefaultTestArchSelection)]
+        [DataRow("2.1.0-rc1", BundleType.AspNetRuntime, DefaultTestArchSelection)]
+        [DataRow("2.2.1 2.2.2 2.2.3 2.2.4 2.2.5", BundleType.AspNetRuntime, DefaultTestArchSelection)]
+        [DataRow("3.0.0-preview6-19307-2 2.2.6 2.2.0", BundleType.HostingBundle, DefaultTestArchSelection)]
+        [DataRow("2.2.0-preview3-final", BundleType.HostingBundle, DefaultTestArchSelection)]
         internal void TestNoOptionFiltererSpecifiedVersionNotFoundException(string argValue, BundleType typeSelection, BundleArch archSelection)
         {
             TestFiltererException<SpecifiedVersionNotFoundException>(DefaultTestBundles, argValue, typeSelection, archSelection, string.Format(LocalizableStrings.SpecifiedVersionNotFoundExceptionMessageFormat, argValue));

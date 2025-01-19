@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.Build.Logging.Query.Ast;
 using Microsoft.Build.Logging.Query.Parse;
 using Microsoft.Build.Logging.Query.Result;
-using Xunit;
 
 namespace Microsoft.Build.Logging.Query.Tests.Parse
 {
+    [TestClass]
     public class ParserTests
     {
         public static IEnumerable<object[]> GenerateDataForTestParsedAst()
@@ -288,41 +288,41 @@ namespace Microsoft.Build.Logging.Query.Tests.Parse
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GenerateDataForTestParsedAst))]
+        [TestMethod]
+        [DynamicData(nameof(GenerateDataForTestParsedAst))]
         public void TestParsedAst(string expression, IAstNode expectedAst)
         {
             var actualAst = Parser.Parse(expression);
             actualAst.Should().Be(expectedAst);
         }
 
-        [Theory]
-        [InlineData("")]
-        [InlineData("/")]
-        [InlineData("//")]
-        [InlineData("message")]
-        [InlineData("project/message")]
-        [InlineData("/warning/")]
-        [InlineData("/message/project")]
-        [InlineData("/task/task")]
-        [InlineData("/project/target/target/task/error")]
-        [InlineData("/project//target")]
-        [InlineData("//message/target")]
-        [InlineData("/project/target/task//warning/task")]
-        [InlineData("/message/message")]
-        [InlineData("/warning//error")]
-        [InlineData("//error/message")]
-        [InlineData("//warning//message")]
-        [InlineData("/Task[ID=\"123\"]")]
-        [InlineData("/Task[ID==123]")]
-        [InlineData("/Task[ID]")]
-        [InlineData("/Task[ID=123")]
-        [InlineData("/Target[Id=\"999\"]/Task")]
-        [InlineData("/Target[Id,Id=123]")]
-        [InlineData("/Target[Name=123")]
-        [InlineData("/Project[[Id=1]]")]
-        [InlineData("/Project[Name=123]")]
-        [InlineData("/Project[Path=123]")]
+        [TestMethod]
+        [DataRow("")]
+        [DataRow("/")]
+        [DataRow("//")]
+        [DataRow("message")]
+        [DataRow("project/message")]
+        [DataRow("/warning/")]
+        [DataRow("/message/project")]
+        [DataRow("/task/task")]
+        [DataRow("/project/target/target/task/error")]
+        [DataRow("/project//target")]
+        [DataRow("//message/target")]
+        [DataRow("/project/target/task//warning/task")]
+        [DataRow("/message/message")]
+        [DataRow("/warning//error")]
+        [DataRow("//error/message")]
+        [DataRow("//warning//message")]
+        [DataRow("/Task[ID=\"123\"]")]
+        [DataRow("/Task[ID==123]")]
+        [DataRow("/Task[ID]")]
+        [DataRow("/Task[ID=123")]
+        [DataRow("/Target[Id=\"999\"]/Task")]
+        [DataRow("/Target[Id,Id=123]")]
+        [DataRow("/Target[Name=123")]
+        [DataRow("/Project[[Id=1]]")]
+        [DataRow("/Project[Name=123]")]
+        [DataRow("/Project[Path=123]")]
         public void TestParsedAstException(string expression)
         {
             Action action = () =>

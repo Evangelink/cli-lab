@@ -1,14 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Logging.Query.Interpret;
 using Microsoft.Build.Logging.Query.Result;
-using Xunit;
 
 namespace Microsoft.Build.Logging.Query.Tests.Interpret
 {
+    [TestClass]
     public class InterpreterTests
     {
         public static IEnumerable<object[]> GetDataForTestFilter()
@@ -146,8 +146,8 @@ namespace Microsoft.Build.Logging.Query.Tests.Interpret
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestFilter))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestFilter))]
         public void TestFilter(string expression, Result.Build build, IList<IQueryResult> expected)
         {
             var interpreter = new Interpreter(expression);

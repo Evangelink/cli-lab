@@ -2,10 +2,10 @@
 using System.CommandLine;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
-using Xunit;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
 {
+    [TestClass]
     public class AllPreviewsButLatestOptionFiltererTests : FiltererTests
     {
         internal override Option Option => CommandLineConfigs.UninstallAllPreviewsButLatestOption;
@@ -86,8 +86,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
             };
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForTestFiltererGood))]
+        [TestMethod]
+        [DynamicData(nameof(GetDataForTestFiltererGood))]
         internal void TestAllPreviewsButLatestOptionFiltererGood(IEnumerable<Bundle> testBundles, IEnumerable<Bundle> expected, BundleType typeSelection, BundleArch archSelection)
         {
             TestFiltererGood(testBundles, DefaultTestArgValue, expected, typeSelection, archSelection);
