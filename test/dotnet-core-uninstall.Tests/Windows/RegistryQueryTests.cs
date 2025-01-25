@@ -3,16 +3,15 @@
 
 using System;
 using FluentAssertions;
-using Microsoft.DotNet.Tools.Uninstall.Tests.Attributes;
 using Microsoft.DotNet.Tools.Uninstall.Windows;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Windows
 {
     [TestClass]
     public class RegistryQueryTests
     {
-        [WindowsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.Windows)]
         [DataRow("Microsoft .NET Core SDK 2.2.202 (x64)")]
         [DataRow("Microsoft .NET Core SDK 2.1.300 - rc1 (x86)")]
         [DataRow("Microsoft .NET Core SDK 3.0.100 - preview5 (x64)")]
@@ -58,7 +57,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Windows
             }
         }
 
-        [WindowsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.Windows)]
         [DataRow("Microsoft ASP.NET Web Frameworks and Tools VS2015")]
         [DataRow("Microsoft .NET Core SDK - rc1 (x86)")]
         public void TestGetBundleVersionReturnsNullOnInvalidDisplayNames(string displayName)

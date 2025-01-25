@@ -14,7 +14,6 @@ using Microsoft.DotNet.Tools.Uninstall.Shared.Commands;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Exceptions;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Utils;
-using Microsoft.DotNet.Tools.Uninstall.Tests.Attributes;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
 {
@@ -36,10 +35,11 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
             { "2.1.1", BundleArch.X86 },
         };
 
-        [WindowsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.Windows)]
         [DataRow("remove --all --sdk", new string[] { "1.0.0", "1.0.1" })]
-        [DataRow("dry-run --all --sdk", new string[] { "1.0.0", "1.0.1"})]
-        [DataRow("whatif --all --sdk", new string[] { "1.0.0", "1.0.1"})]
+        [DataRow("dry-run --all --sdk", new string[] { "1.0.0", "1.0.1" })]
+        [DataRow("whatif --all --sdk", new string[] { "1.0.0", "1.0.1" })]
         [DataRow("remove --all-below 5.0.0 --sdk --force", new string[] { "1.0.0", "1.0.1", "1.1.0", "2.1.0", "2.1.500", "2.1.600", "2.2.100", "2.2.200" })]
         [DataRow("remove --sdk 1.0.1", new string[] { "1.0.1" })]
         [DataRow("remove --sdk 1.0.0", new string[] { "1.0.0" })]
@@ -57,7 +57,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
             TestRequiredUninstallableWhenExplicitlyAdded(bundles, command, expectedUninstallable, new string[0]);
         }
 
-        [WindowsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.Windows)]
         [DataRow("whatif --all --sdk --x64", new string[] { "3.0.0", "3.0.0-preview", "1.0.0" })]
         [DataRow("whatif --all --sdk --x86", new string[] { "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2" })]
         public void TestRequiredUninstallableWithOptionsWindows(string command, string[] expectedUninstallableSdk)
@@ -71,7 +72,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
             TestRequiredUninstallableWhenExplicitlyAdded(bundles, command, expectedUninstallableSdk, new string[0]);
         }
 
-        [MacOsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.MacOSX)]
         [DataRow("remove --all-below 5.0.0 --sdk", new string[] { "1.0.0", "1.0.1", "1.1.0", "2.1.0", "2.1.500", "2.1.600", "2.2.100", "2.2.200" }, new string[] { })]
         [DataRow("remove --all-below 5.0.0 --sdk --force", new string[] { "1.0.0", "1.0.1", "1.1.0", "2.1.0", "2.1.500", "2.1.600", "2.2.100", "2.2.200" }, new string[] { })]
         [DataRow("remove --all-below 5.0.0 --runtime", new string[] { }, new string[] { "1.0.0", "2.1.0", "2.1.500", "2.2.100" })]
@@ -89,7 +91,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
             TestRequiredUninstallableWhenExplicitlyAdded(bundles, command, expectedUninstallableSdk, expectedUninstallableRuntime);
         }
 
-        [MacOsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.MacOSX)]
         [DataRow("remove --all-previews --sdk", new string[] { "3.0.0-preview", "3.0.2-preview1", "3.0.2-preview2" })]
         [DataRow("remove --all-lower-patches --sdk", new string[] { "1.0.0", "3.0.1", "3.0.0", "3.0.0-preview", "3.0.2-preview1", "3.0.2-preview2" })]
         public void TestRequiredUninstallableWithOptionsMac(string command, string[] expectedUninstallableSdk)

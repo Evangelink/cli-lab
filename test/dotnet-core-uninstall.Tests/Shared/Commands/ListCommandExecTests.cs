@@ -6,7 +6,6 @@ using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo;
 using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo.Versioning;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Commands;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
-using Microsoft.DotNet.Tools.Uninstall.Tests.Attributes;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
 {
@@ -27,7 +26,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
             { "2.1.1", BundleArch.X86 },
         };
 
-        [WindowsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.Windows)]
         [DataRow("sdk", "", new string[] { "1.0.1", "3.1.0", "2.1.1" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2" })]
         [DataRow("runtime", "", new string[] { }, new string[] { "1.0.1", "3.1.0", "2.1.1", "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2" })]
         [DataRow("sdk", "--x64", new string[] { "1.0.1" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0" })]
@@ -36,7 +36,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
             ListCommandFilteringIsCorrect(bundleType, options, expectedProtected, expectedUninstallable);
         }
 
-        [MacOsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.MacOSX)]
         [DataRow("sdk", "", new string[] { "3.1.0" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2", "3.0.2-preview1", "3.0.2-preview2", "2.1.1", "1.0.1" })]
         [DataRow("runtime", "", new string[] { "3.1.0", "3.0.2", "2.1.1", "1.0.1" }, new string[] { "3.0.0", "3.0.0-preview", "1.0.0", "3.0.1", "3.0.2-preview1", "3.0.2-preview2" })]
         public void ListCommandFilteringIsCorrectOnMac(string bundleType, string options, string[] expectedProtected, string[] expectedUninstallable)
@@ -52,7 +53,7 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Commands
                 bundles.Add(new Bundle<SdkVersion>(new SdkVersion(pair.Key), pair.Value, "sdk", pair.Key));
                 bundles.Add(new Bundle<RuntimeVersion>(new RuntimeVersion(pair.Key), pair.Value, "runtime", pair.Key));
             }
-            var parseResult = CommandLineConfigs.UninstallRootCommand.Parse($"list --{ bundleType } { options }");
+            var parseResult = CommandLineConfigs.UninstallRootCommand.Parse($"list --{bundleType} {options}");
             var result = ListCommandExec.GetFilteredBundlesWithRequirements(bundles, SupportedBundleTypeConfigs.GetSupportedBundleTypes(), parseResult);
 
             result.Values.Count().Should().Be(1);

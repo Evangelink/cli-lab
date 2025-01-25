@@ -8,7 +8,6 @@ using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo.Versioning;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Exceptions;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Filterers;
-using Microsoft.DotNet.Tools.Uninstall.Tests.Attributes;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
 {
@@ -117,7 +116,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
             TestFiltererException<ArgumentOutOfRangeException>(DefaultTestBundles, DefaultTestArgValue, typeSelection, DefaultTestArchSelection);
         }
 
-        [WindowsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.Windows)]
         public void TestFiltererBundleTypeNotSpecifiedExceptionWindows()
         {
             TestFiltererException<BundleTypeMissingException>(
@@ -128,7 +128,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Filterers
                 string.Format(LocalizableStrings.BundleTypeMissingExceptionMessage, "--aspnet-runtime, --hosting-bundle, --runtime, --sdk"));
         }
 
-        [MacOsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.MacOSX)]
         public void TestFiltererBundleTypeNotSpecifiedExceptionMacOs()
         {
             TestFiltererException<BundleTypeMissingException>(

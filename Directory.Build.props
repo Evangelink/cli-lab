@@ -11,8 +11,9 @@
   <!-- Test config -->
   <PropertyGroup>
     <!-- Arcade config -->
-    <MSTestVersion>3.8.0-preview.25072.4</MSTestVersion>
-    <MTPVersion>1.6.0-preview.25072.4</MTPVersion>
+    <TestToolsSuffix>-preview.25074.1</TestToolsSuffix>
+    <MSTestVersion>3.8.0$(TestToolsSuffix)</MSTestVersion>
+    <MTPVersion>1.6.0$(TestToolsSuffix)</MTPVersion>
     <TestRunnerName>MSTest</TestRunnerName>
     <UseMSTestMetaPackage>true</UseMSTestMetaPackage>
     <UseMSTestRunner>true</UseMSTestRunner>

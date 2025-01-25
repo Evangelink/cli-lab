@@ -8,7 +8,6 @@ using Microsoft.DotNet.Tools.Uninstall.Shared.BundleInfo;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Configs.Verbosity;
 using Microsoft.DotNet.Tools.Uninstall.Shared.Exceptions;
-using Microsoft.DotNet.Tools.Uninstall.Tests.Attributes;
 
 namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Configs
 {
@@ -41,7 +40,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Configs
                 .Should().BeEquivalentTo(expectedAuxOptions);
         }
 
-        [WindowsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.Windows)]
         [DataRow("list --aspnet-runtime", new string[] { "aspnet-runtime" })]
         [DataRow("list -v n --aspnet-runtime", new string[] { "verbosity", "aspnet-runtime" })]
         [DataRow("list --sdk --verbosity diag --aspnet-runtime", new string[] { "verbosity", "sdk", "aspnet-runtime" })]
@@ -265,7 +265,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Configs
                 .Should().BeEquivalentTo(expectedAuxOptions);
         }
 
-        [WindowsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.Windows)]
         [DataRow("remove --all --sdk --aspnet-runtime", new string[] { "sdk", "aspnet-runtime" })]
         [DataRow("remove --major-minor 1.1 --hosting-bundle -v q", new string[] { "hosting-bundle", "verbosity" })]
         public void TestOptionsAcceptAuxWindows(string command, string[] expectedAuxOptions)
@@ -379,7 +380,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Configs
             .Should().BeTrue();
         }
 
-        [MacOsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.MacOSX)]
         [DataRow("remove --all --aspnet-runtime")]
         [DataRow("remove --major-minor 1.1 --hosting-bundle")]
         [DataRow("remove --all-but 2.2.300 --sdk --aspnet-runtime -v q")]
@@ -710,7 +712,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Configs
                 .Should().Be(expected);
         }
 
-        [WindowsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.Windows)]
         [DataRow("remove", BundleType.Sdk | BundleType.Runtime | BundleType.AspNetRuntime | BundleType.HostingBundle)]
         [DataRow("remove -v q", BundleType.Sdk | BundleType.Runtime | BundleType.AspNetRuntime | BundleType.HostingBundle)]
         [DataRow("remove --all", BundleType.Sdk | BundleType.Runtime | BundleType.AspNetRuntime | BundleType.HostingBundle)]
@@ -733,7 +736,8 @@ namespace Microsoft.DotNet.Tools.Uninstall.Tests.Shared.Configs
                 .Should().Be(expected);
         }
 
-        [MacOsOnlyTestMethod]
+        [TestMethod]
+        [OSCondition(OperatingSystems.MacOSX)]
         [DataRow("remove", BundleType.Sdk | BundleType.Runtime)]
         [DataRow("remove -v q", BundleType.Sdk | BundleType.Runtime)]
         [DataRow("remove --all", BundleType.Sdk | BundleType.Runtime)]
